@@ -9,7 +9,6 @@ figpath = '../figures/';
 addpath('./utils');
 
 %% generate Data
-
 polyorder = 5;               % search space up to fifth order polynomials
 usesine   = 0;               % no trig functions
 n         = 2;               % 2D system
@@ -18,8 +17,13 @@ rhs       = @(x)A*x;         % ODE right hand side
 tspan     = [0:.01:25];      % time span
 x0        = [2; 0];          % initial conditions
 
-options   = odeset('RelTol',1e-10,'AbsTol',1e-10*ones(1,n));
-[t,x]     = ode45(@(t,x)rhs(x),tspan,x0,options);  % integrate
+options   = odeset('RelTol',1e-10, 'AbsTol',1e-10*ones(1,n));
+[t,x]     = ode45(@(t,x)rhs(x),tspan,x0) %,options);  % integrate
+
+%%
+
+plot(tspan, x)
+
 
 %% compute Derivative
 eps = .05;      % noise strength
@@ -27,6 +31,9 @@ for i=1:length(x)
     dx(i,:) = A*x(i,:)';
 end
 dx = dx + eps*randn(size(dx));   % add noise
+
+%%
+plot(tspan, dx)
 
 %% pool Data  (i.e., build library of nonlinear time series)
 Theta = poolData(x,n,polyorder,usesine);
