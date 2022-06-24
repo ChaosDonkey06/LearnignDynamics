@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 
-/sparsedynamics
+./sparsedynamics
 
 # C extensions
 *.so
